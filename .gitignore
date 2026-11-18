@@ -1,0 +1,14 @@
+# Visual Studio & IDE files
+.vs/
+GlassDashboard/
+**/[Bb]in/
+**/[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini

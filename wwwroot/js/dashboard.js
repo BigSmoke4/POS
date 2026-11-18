@@ -37,31 +37,125 @@
   };
 
   /* ========================================================
-     API Communication Layer
-     Designed for easy backend ASP.NET Core controller hooking
+     API Communication Layer & Static Mock Fallback
+     Works seamlessly with ASP.NET Core controller and GitHub Pages!
      ======================================================== */
+  const MOCK_DATA = {
+    branches: [
+      { id: 1, name: "Dhaka", scale: 1.0 },
+      { id: 2, name: "Chattogram", scale: 0.72 },
+      { id: 3, name: "Barishal", scale: 0.38 },
+      { id: 4, name: "Khulna", scale: 0.50 },
+      { id: 5, name: "Sylhet", scale: 0.44 },
+      { id: 6, name: "Rajshahi", scale: 0.34 },
+      { id: 7, name: "Rangpur", scale: 0.28 },
+      { id: 8, name: "Mymensingh", scale: 0.32 }
+    ],
+    generateSales() {
+      return this.branches.map((b, i) => ({
+        id: b.id,
+        name: b.name,
+        monthly: Array.from({ length: 12 }, (_, m) =>
+          Math.round(b.scale * (2400000 + 900000 * Math.sin((m + i) * 0.7) + m * 85000))
+        )
+      }));
+    },
+    products: [
+      // Dhaka Branch (id: 1)
+      { id: 1, branchId: 1, name: 'Sony Bravia 55" 4K Google TV', amount: 1250000, qty: 15 },
+      { id: 2, branchId: 1, name: 'Samsung French Door Refrigerator 580L', amount: 980000, qty: 8 },
+      { id: 3, branchId: 1, name: 'Gree 1.5 Ton Dual Inverter AC', amount: 720000, qty: 12 },
+      { id: 4, branchId: 1, name: 'LG AI DD Front Load Washer 9KG', amount: 540000, qty: 9 },
+      { id: 5, branchId: 1, name: 'Panasonic Inverter Microwave 32L', amount: 320000, qty: 22 },
+      { id: 6, branchId: 1, name: 'Philips Digital Air Fryer XL', amount: 210000, qty: 25 },
+
+      // Chattogram Branch (id: 2)
+      { id: 7, branchId: 2, name: 'Carrier 2.0 Ton Heavy Duty AC', amount: 890000, qty: 11 },
+      { id: 8, branchId: 2, name: 'Samsung 65" Crystal UHD 4K TV', amount: 780000, qty: 9 },
+      { id: 9, branchId: 2, name: 'Whirlpool Double Door Fridge 340L', amount: 490000, qty: 13 },
+      { id: 10, branchId: 2, name: 'Haier Top Load Fully Auto Washer', amount: 340000, qty: 14 },
+      { id: 11, branchId: 2, name: 'Hitachi Power Suction Vacuum Cleaner', amount: 195000, qty: 18 },
+
+      // Barishal Branch (id: 3)
+      { id: 12, branchId: 3, name: 'Walton Smart Inverter Refrigerator', amount: 420000, qty: 16 },
+      { id: 13, branchId: 3, name: 'Singer 43" Android Smart TV', amount: 380000, qty: 12 },
+      { id: 14, branchId: 3, name: 'Midea 1.0 Ton Split Inverter AC', amount: 310000, qty: 8 },
+      { id: 15, branchId: 3, name: 'Miyako Heavy Weight Blender & Grinder', amount: 165000, qty: 38 },
+      { id: 16, branchId: 3, name: 'Vision Multi Induction Cooker 2200W', amount: 95000, qty: 28 },
+
+      // Khulna Branch (id: 4)
+      { id: 17, branchId: 4, name: 'Haier 1.5 Ton Clean Cool Inverter AC', amount: 560000, qty: 10 },
+      { id: 18, branchId: 4, name: 'Sony 43" 4K HDR Smart TV', amount: 470000, qty: 11 },
+      { id: 19, branchId: 4, name: 'Sharp No-Frost Refrigerator 315L', amount: 390000, qty: 9 },
+      { id: 20, branchId: 4, name: 'Walton Chest Freezer 250L', amount: 295000, qty: 12 },
+      { id: 21, branchId: 4, name: 'Prestige Electric Pressure Cooker 6L', amount: 145000, qty: 26 },
+
+      // Sylhet Branch (id: 5)
+      { id: 22, branchId: 5, name: 'General 1.5 Ton Tropical Inverter AC', amount: 680000, qty: 9 },
+      { id: 23, branchId: 5, name: 'Samsung 50" QLED 4K Smart TV', amount: 520000, qty: 8 },
+      { id: 24, branchId: 5, name: 'Hitachi Bottom Freezer Fridge 365L', amount: 440000, qty: 7 },
+      { id: 25, branchId: 5, name: 'De\'Longhi Pump Espresso Maker', amount: 285000, qty: 14 },
+      { id: 26, branchId: 5, name: 'Panasonic Convection Oven 27L', amount: 190000, qty: 16 },
+
+      // Rajshahi Branch (id: 6)
+      { id: 27, branchId: 6, name: 'Gree 1.0 Ton Lomo Eco Inverter AC', amount: 420000, qty: 10 },
+      { id: 28, branchId: 6, name: 'Walton 43" Google Certified TV', amount: 330000, qty: 11 },
+      { id: 29, branchId: 6, name: 'Singer Direct Cool Refrigerator 240L', amount: 290000, qty: 13 },
+      { id: 30, branchId: 6, name: 'Symphony Tower Desert Air Cooler', amount: 180000, qty: 19 },
+      { id: 31, branchId: 6, name: 'Jaipan 1000W Heavy Duty Mixer Grinder', amount: 120000, qty: 32 },
+
+      // Rangpur Branch (id: 7)
+      { id: 32, branchId: 7, name: 'Vision 40" LED Smart Android TV', amount: 310000, qty: 12 },
+      { id: 33, branchId: 7, name: 'Walton Double Door Fridge 220L', amount: 275000, qty: 14 },
+      { id: 34, branchId: 7, name: 'Midea 1.0 Ton Fast Cool Inverter AC', amount: 260000, qty: 7 },
+      { id: 35, branchId: 7, name: 'Kiam Electric Infrared Cooker', amount: 95000, qty: 30 },
+
+      // Mymensingh Branch (id: 8)
+      { id: 36, branchId: 8, name: 'Haier 1.5 Ton Triple Inverter AC', amount: 440000, qty: 8 },
+      { id: 37, branchId: 8, name: 'Sony 32" Smart HD TV', amount: 280000, qty: 14 },
+      { id: 38, branchId: 8, name: 'Walton Glass Door Refrigerator 213L', amount: 260000, qty: 12 },
+      { id: 39, branchId: 8, name: 'Panasonic Automatic Rice Cooker 2.2L', amount: 110000, qty: 28 }
+    ],
+    getTopProducts(branchId = null) {
+      if (branchId != null && branchId > 0) {
+        return this.products
+          .filter(p => p.branchId === Number(branchId))
+          .sort((a, b) => b.amount - a.amount);
+      }
+      const aggregated = {};
+      this.products.forEach(p => {
+        if (!aggregated[p.name]) {
+          aggregated[p.name] = { id: p.id, name: p.name, amount: 0, qty: 0 };
+        }
+        aggregated[p.name].amount += p.amount;
+        aggregated[p.name].qty += p.qty;
+      });
+      return Object.values(aggregated)
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 8);
+    }
+  };
+
   const API = {
-    // Fetches sales data for all branches
+    // Fetches sales data for all branches (falls back to mock data if static host)
     async getSalesData() {
       try {
         const res = await fetch("/Home/SalesData");
         if (!res.ok) throw new Error("HTTP error " + res.status);
         return await res.json();
-      } catch (err) {
-        console.error("Failed to load /Home/SalesData:", err);
-        return [];
+      } catch {
+        return MOCK_DATA.generateSales();
       }
     },
-    // Fetches top products (optional branchId; null = all branches)
+    // Fetches top products (falls back to mock data if static host)
     async getTopProducts(branchId = null) {
       try {
         const url = branchId ? `/Home/TopProducts?branchId=${branchId}` : `/Home/TopProducts`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("HTTP error " + res.status);
         return await res.json();
-      } catch (err) {
-        console.error("Failed to load /Home/TopProducts:", err);
-        return [];
+      } catch {
+        return MOCK_DATA.getTopProducts(branchId);
       }
     }
   };
