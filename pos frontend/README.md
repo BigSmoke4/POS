@@ -70,3 +70,4 @@ Returns monthly sales (12 numbers for Jan..Dec) and names for all branches:
 You can open `index.html` directly in any web browser, or serve it using any local HTTP server (Live Server in VS Code, Python `python -m http.server`, Node `npx serve`, IIS, etc.).
 - When the backend is offline or disconnected, it automatically uses the built-in fallback data so the UI remains 100% interactive and functional for testing.
 - When your backend controller is connected, it automatically switches to live database data!
+

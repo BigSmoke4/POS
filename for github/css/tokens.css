@@ -1,0 +1,37 @@
+/* ===== Design tokens: change the look of the whole app from here ===== */
+:root {
+  --bg: #e5e7eb;
+  --light: #ffffff;
+  --shade: rgb(153, 161, 175);
+  --inset: rgb(209, 213, 220);
+
+  --ink: #1f2937;
+  --ink-soft: #374151;
+  --ink-faint: #6b7280;
+
+  --green: #10b981;
+  --green-text: #02972f;
+  --red-text: #dc2626;
+  --accent: #10b981;
+  --c1: #10b981; --c2: #3b82f6; --c3: #f59e0b;
+  --c4: #8b5cf6; --c5: #ef4444; --c6: #06b6d4;
+
+  /* neumorphic recipes */
+  --neu-raised: -6px -6px 12px rgba(255, 255, 255, 0.8), 6px 6px 12px rgba(153, 161, 175, 0.4);
+  --neu-small:  -3px -3px 6px rgba(255, 255, 255, 0.9), 3px 3px 6px rgba(153, 161, 175, 0.3);
+  --neu-pressed: inset 3px 3px 6px rgba(153, 161, 175, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+
+  --r-pill: 9999px;
+  --r-card: 20px;
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Roboto, "Helvetica Neue", sans-serif;
+  --fs-title: 1.15rem;
+  --fs-card: 18px;
+  --fs-body: 0.9rem;
+  --fs-small: 0.78rem;
+
+  --gap: 28px;
+  --sidebar-w: 290px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur: 380ms;
+}
